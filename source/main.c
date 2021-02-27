@@ -92,11 +92,23 @@ break;
 	}
 break;
 	case wait:
-	row = 0xFD;
+	if (row != 0xEF){
+	row = (row << 1) | 0x01;
+	}
+	else if (row == 0xEF){
+	state = check;
+	}
 	state = check;
 break;
 	case wait1:
+	if (row != 0xFD){
+	row = (row >> 1) | 1;
+	}
+	else if (row == 0xFD || row == 0xFE){
 	row = 0xFE;
+	state = check1;
+	}
+	
 state = check1;
 break;
 	case check:
@@ -159,7 +171,7 @@ int main(void) {
 DDRA = 0x00; PORTA = 0xFF;
 DDRB = 0x00; PORTB = 0xFF;
 DDRC = 0xFF; PORTC = 0x00;
-DDRD = 0x1F; PORTD = 0x00;
+DDRD = 0xFF; PORTD = 0x00;
 
 //TimerSet(25);
 //TimerOn();
