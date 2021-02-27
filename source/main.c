@@ -65,7 +65,7 @@ static unsigned char pattern = 0xFF;
 static unsigned char row = 0xFE;
 unsigned char but = 0x00;
 unsigned char but1 = 0x00;
-enum Demo_States {start,button,wait,check,wait1,check1}state;
+enum Demo_States {start,button,wait,check,wait1,check1,check2,check3,check4,check5}state;
 void Demo_Tick() {
 
 	but = ~PINA & 0x01;
@@ -92,9 +92,11 @@ break;
 	}
 break;
 	case wait:
+	row = 0xFD;
 	state = check;
 break;
 	case wait1:
+	row = 0xFE;
 state = check1;
 break;
 	case check:
@@ -114,10 +116,21 @@ break;
 	state = button;
 	}
 	break;
-		default:	
-	state = start;
-	break;
-	}	
+	case check2:
+break;
+	case check3:
+break;
+	case check4:
+break;
+	case check5:
+break;
+
+
+
+	default:
+state = start;
+break;
+	}
 	// Actions
 	switch (state) {
 		default:
@@ -129,10 +142,10 @@ break;
 		case wait1:
 	break;
 		case check:
-	row = 0xFD;
+//	row = 0xFD;
 	break;
 		case check1:
-	row = 0xFE;
+//	row = 0xFE;
 	break;
 
 	}
