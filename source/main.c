@@ -61,108 +61,69 @@ void TimerSet(unsigned long M){
 // Period: 100 ms
 //--------------------------------------
 //
-static unsigned char pattern = 0xFF;
-static unsigned char row = 0xFE;
-unsigned char but = 0x00;
-unsigned char but1 = 0x00;
-enum Demo_States {start,button,wait,check,wait1,check1,check2,check3,check4,check5}state;
-void Demo_Tick() {
+static unsigned char pattern = 0x80;
+static unsigned char row = 0x00;
+unsigned char d = 0x00;
+unsigned char u = 0x00;
+unsigned char left = 0x00;
+unsigned char right = 0x00;
+unsigned char flag = 0;
 
-	but = ~PINA & 0x01;
-	but1 = ~PINA & 0x02;
+unsigned char arr[4] = {0x20,0x10,0x08,0x04};
+unsigned char arr1[4] = {0xF1, 0xF5, 0xF5, 0xF1};
 
-
-	switch (state) {
-		case start:
-			PORTC = pattern;
-			PORTD = row;
-			state = button;
-		
+enum Demo_States{start,l,r,m1,m2}state;
+enum move_states{init,checking,but,but1,but2,but3,wait1,wait2,wait3,wait4}move;
+void Demo_Tick(){
+switch(state){
+		state = m1;	
 break;
-	case button:
-	if (but){
-	state = wait;
-	}
-	else if (but1){
-	state = wait1;
-	}
-	else{
+		case l:
+		pattern = arr[0];
+		row = arr1[0];
+		state = r;
+		break;
 	
-	state = button;
-	}
-break;
-	case wait:
-	if (row != 0xEF){
-	row = (row << 1) | 0x01;
-	}
-	else if (row == 0xEF){
-	state = check;
-	}
-	state = check;
-break;
-	case wait1:
-	if (row != 0xFD){
-	row = (row >> 1) | 1;
-	}
-	else if (row == 0xFD || row == 0xFE){
-	row = 0xFE;
-	state = check1;
-	}
-	
-state = check1;
-break;
-	case check:
-	if (but){
-	state = check;
-	}
-	else if (!but){
-	state = button;
-	}
-break;
-
-	case check1:
-	if(but1){
-	state = check1;
-	}
-	else if (!but1){
-	state = button;
-	}
-	break;
-	case check2:
-break;
-	case check3:
-break;
-	case check4:
-break;
-	case check5:
-break;
-
-
+		case m1:
+		pattern = arr[1];
+		row = arr1[1];
+		state = m2;
+		break;
+case m2:	
+		pattern = arr[2];
+		row = arr1[2];
+		state = l;
+		break;
+case r:
+		pattern = arr[3];
+		row = arr1[3];
+		state = m1;
+	break;	
 
 	default:
-state = start;
-break;
-	}
-	// Actions
-	switch (state) {
-		default:
-	break;
-		case button:
-	break;
-		case wait:
-	break;
-		case wait1:
-	break;
-		case check:
-//	row = 0xFD;
-	break;
-		case check1:
-//	row = 0xFE;
-	break;
-
+	state = start;
 	}
 	PORTC = pattern;	// Pattern to display
-	PORTD = row;		// Row(s) displaying pattern	
+	PORTD = row;		// Row(s) displaying pattern
+}
+
+void buttons(){
+	d = ~PINA & 0x01;
+	left = ~PINA & 0x02;
+	right = ~PINA & 0x04;
+	u = ~PINA & 0x08;
+switch(move){
+	case init:
+		break;
+	case checking:
+		if (d){
+
+		}
+		break;
+	default:
+		move = init;
+}
+
 }
 
 
