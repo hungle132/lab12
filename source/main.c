@@ -67,8 +67,10 @@ unsigned char d = 0x00;
 unsigned char u = 0x00;
 unsigned char left = 0x00;
 unsigned char right = 0x00;
-unsigned char flag = 0;
-
+unsigned char flag = 1;
+unsigned char flag1 = 1;
+unsigned char flag2 = 2;
+unsigned char flag3 = 2;
 unsigned char arr[4] = {0x20,0x10,0x08,0x04};
 unsigned char arr1[4] = {0xF1, 0xF5, 0xF5, 0xF1};
 
@@ -135,28 +137,44 @@ switch(move){
 		}
 		break;
 	case wait1:
+		if (flag != 0){
 		for (unsigned int i = 0; i < 4; i++){
 		arr1[i] = arr1[i] << 1 | 0x01;
+		}
+		flag--;
+		flag1++;
 		}
 		move = but;
 		break;
 	case wait2:
+		if (flag2 != 0){
 		for (unsigned int i = 0; i < 4; i++){
 		
 		arr[i] = arr[i] << 1;
 		
 		}
+		flag2--;
+		flag3++;
+		}
 		move = but1;
 		break;
 	case wait3:
+		if(flag3 !=0 ){
 		for (unsigned int i = 0; i < 4; i++){
 		arr[i] = arr[i] >> 1;
+		}
+		flag3--;
+		flag2++;
 		}
 		move = but2;
 		break;
 	case wait4:
+		if (flag1 != 0){
 		for (unsigned int i = 0; i < 4; i++){
 		arr1[i] = arr1[i] >> 1;
+		}
+		flag1--;
+		flag++;
 		}
 		move = but3;
 		break;
